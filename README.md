@@ -1,6 +1,6 @@
 # Reproduction of possible wasm-bindgen bug on Webkit
 
-This is a minimal reproduction of a possible bug in wasm-bindgen. The bug is that the wasm-bindgen generated code for Webkit browsers crashes in the app http://wasm.simpleicons.org/ The full code is available at https://github.com/mondeja/simple-icons-website-rs
+This is a minimal reproduction of a possible bug in wasm-bindgen. Seems that the wasm-bindgen generated code for Webkit browsers crashes in the app http://wasm.simpleicons.org/ The full code is available at https://github.com/mondeja/simple-icons-website-rs
 
 The bug only happens sometimes, so seems to be a memory error. I can't remove more code from this minimal reproducible example because the bug disappears. Even with the actual code the bug doesn't happens always. It raises `unreachable error` in the console, but sometimes raises an error from a struct not being built (`unwrap` error from a `None`) or a message with "(the wasm file) resource was preloaded using link preload but not used within a few seconds" and no error.
 
@@ -9,7 +9,7 @@ It doesn't happens in any other browser, so I think it's a bug in wasm-bindgen f
 ## Steps to reproduce
 
 1. Add wasm32 target with `rustup target add wasm32-unknown-unknown`
-2. Install playwright with `npm install -DE @playwright/test anywhere`
+2. Install Playwright with `npm install -DE @playwright/test anywhere`
 3. Install Playwright browsers with `npx playwright install --with-deps`
 4. Install Trunk `cargo install trunk`
 5. Run `sh test.sh --wasm-bindgen-version "0.2.84" --max-attempts-to-reproduce 20 --opt-level z`

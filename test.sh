@@ -58,8 +58,6 @@ run_tests() {
     npx playwright test \
         --trace=on \
         --grep="has title" \
-        --project=chromium \
-        --project=webkit \
         --reporter=list \
     || TESTS_FAILED=1
     cd ..
