@@ -1,0 +1,41 @@
+name: Verify
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  run:
+    name: Reproduce bug
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        opt-level: [0, 1, 2, 3, 4, s, z]
+        wasm-bindgen-version: ["0.2.84", "0.2.83", "0.2.82", "0.2.81"]
+        rust-version: ["nightly", "stable"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Rust nightly
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          rustup default ${{ matrix.rust-version }}}
+          rustup target add wasm32-unknown-unknown
+      - name: Use Node.js v18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - name: Install Node.js dependencies
+        run: npm install
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+      - name: Run reproduction script
+        run: |
+          sh test.sh --wasm-bindgen-version "${{ matrix.wasm-bindgen-version }}" \
+            --max-attempts-to-reproduce 30 --opt-level "${{ matrix.opt-level }}
+      - name: Upload test traces
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report
+          path: tests/test-results

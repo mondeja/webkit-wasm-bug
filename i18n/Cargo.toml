@@ -1,0 +1,12 @@
+[package]
+name = "i18n"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+path = "src/lib.rs"
+name = "i18n"
+
+[dependencies]
+leptos.workspace = true
+lazy_static.workspace = true

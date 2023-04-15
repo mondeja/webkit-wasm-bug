@@ -1,0 +1,10 @@
+{
+  "name": "my_app",
+  "version": "1.0.0",
+  "description": "My App",
+  "private": "true",
+  "devDependencies": {
+    "@playwright/test": "1.32.3",
+    "anywhere": "1.6.0"
+  }
+}
