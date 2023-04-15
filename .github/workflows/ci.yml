@@ -33,7 +33,7 @@ jobs:
       - name: Run reproduction script
         run: |
           sh test.sh --wasm-bindgen-version "${{ matrix.wasm-bindgen-version }}" \
-            --max-attempts-to-reproduce 30 --opt-level "${{ matrix.opt-level }}
+            --max-attempts-to-reproduce 30 --opt-level "${{ matrix.opt-level }}"
       - name: Upload test traces
         uses: actions/upload-artifact@v3
         with:
