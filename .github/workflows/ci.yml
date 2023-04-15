@@ -6,7 +6,7 @@ on:
 
 jobs:
   run:
-    name: Reproduce bug
+    name: Run
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
@@ -30,7 +30,7 @@ jobs:
         run: npm install
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
-      - name: Install trunk
+      - name: Install Trunk
         run: cargo install --force trunk
       - name: Run reproduction script
         run: |
