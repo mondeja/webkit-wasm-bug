@@ -30,6 +30,8 @@ jobs:
         run: npm install
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
+      - name: Install trunk
+        run: cargo install --force trunk
       - name: Run reproduction script
         run: |
           sh test.sh --wasm-bindgen-version "${{ matrix.wasm-bindgen-version }}" \
