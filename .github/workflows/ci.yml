@@ -9,18 +9,18 @@ jobs:
     name: Reproduce bug
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         opt-level: [0, 1, 2, 3, 4, s, z]
         wasm-bindgen-version: ["0.2.84", "0.2.83", "0.2.82", "0.2.81"]
-        rust-version: ["nightly", "stable"]
+        rust-toolchain: ["nightly", "stable"]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup Rust nightly
+      - name: Setup Rust ${{ matrix.rust-toolchain }}
         run: |
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-          rustup default ${{ matrix.rust-version }}}
+          rustup default "${{ matrix.rust-toolchain }}"
           rustup target add wasm32-unknown-unknown
       - name: Use Node.js v18
         uses: actions/setup-node@v3
