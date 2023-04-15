@@ -100,6 +100,7 @@ main() {
         fi
         REMAINING_ATTEMPTS_TO_REPRODUCE=$((REMAINING_ATTEMPTS_TO_REPRODUCE - 1))
     done
+    exit $TESTS_FAILED
 }
 
 main
