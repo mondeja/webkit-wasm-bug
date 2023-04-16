@@ -1,29 +1,21 @@
 use console_error_panic_hook;
 use i18n::{gettext, move_gettext, LocaleStateSignal, LANGUAGES};
 use leptos::{
-    component, create_rw_signal, mount_to, provide_context, use_context, view,
+    component, create_rw_signal, mount_to_body, provide_context, use_context, view,
     IntoView, RwSignal, Scope, SignalGet,
 };
 use leptos_router::{
     Route, RouteProps, Router, RouterProps, Routes, RoutesProps,
 };
 use log::Level;
-use wasm_bindgen::JsCast;
-use web_sys;
+use wasm_bindgen::prelude::*;
 
+#[wasm_bindgen(start)]
 pub fn main() {
     _ = console_log::init_with_level(Level::Debug);
     console_error_panic_hook::set_once();
 
-    let html = web_sys::window()
-        .unwrap()
-        .document()
-        .unwrap()
-        .document_element()
-        .unwrap()
-        .dyn_into::<web_sys::HtmlElement>()
-        .unwrap();
-    mount_to(html, |cx| {
+    mount_to_body(|cx| {
         view! { cx, <App/> }
     })
 }

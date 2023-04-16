@@ -35,22 +35,19 @@ done
 
 set_config() {
     sed -i "s/wasm-bindgen = \".*\"/wasm-bindgen = \"$WASM_BINDGEN_VERSION\"/" Cargo.toml
-    sed -i "s/wasm-bindgen = \".*\"/wasm-bindgen = \"$WASM_BINDGEN_VERSION\"/" app/Trunk.toml
-    
-    sed -i "s/wasm-opt=\".*\"/wasm-opt=\"$OPT_LEVEL\"/" app/index.html
+    if [ "$OPT_LEVEL" = "z" ] || [ "$OPT_LEVEL" = "s" ]; then
+        OPT_LEVEL="\"$OPT_LEVEL\""
+    fi
+    sed -i "s/opt-level = \".*\"/opt-level = $OPT_LEVEL/" Cargo.toml
 }
 
 revert_config() {
     sed -i "s/wasm-bindgen = \".*\"/wasm-bindgen = \"$DEFAULT_WASM_BINDGEN_VERSION\"/" Cargo.toml
-    sed -i "s/wasm-bindgen = \".*\"/wasm-bindgen = \"$DEFAULT_WASM_BINDGEN_VERSION\"/" app/Trunk.toml
-    
-    sed -i "s/wasm-opt=\".*\"/wasm-opt=\"$DEFAULT_OPT_LEVEL\"/" app/index.html
+    sed -i "s/opt-level = \".*\"/opt-level = \"$DEFAULT_OPT_LEVEL\"/" Cargo.toml
 }
 
 build() {
-    cd app
-    trunk --config ./Trunk.toml build --release || BUILD_FAILED=1
-    cd ..
+    wasm-pack build app --target web --release || BUILD_FAILED=1
 }
 
 run_tests() {

@@ -3,6 +3,9 @@ name = "my_app"
 version.workspace = true
 edition.workspace = true
 
+[lib]
+crate-type = ["cdylib"]
+
 [dependencies]
 i18n = { path = "../i18n" }
 leptos.workspace = true
@@ -11,4 +14,3 @@ console_log.workspace = true
 log.workspace = true
 console_error_panic_hook.workspace = true
 wasm-bindgen.workspace = true
-web-sys.workspace = true
