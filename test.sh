@@ -36,9 +36,7 @@ revert_config() {
 }
 
 build() {
-    RUSTFLAGS='-C target-feature=+atomics,+bulk-memory,+mutable-globals' \
-        cargo build --target wasm32-unknown-unknown --release \
-        -Z build-std=std,panic_abort || BUILD_FAILED=1
+    cargo build --release || BUILD_FAILED=1
     wasm-bindgen \
         target/wasm32-unknown-unknown/release/my_app.wasm \
         --out-dir app/pkg \
