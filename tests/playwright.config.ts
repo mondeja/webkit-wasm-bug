@@ -40,7 +40,7 @@ const config: PlaywrightTestConfig = {
   },
   /* Run web server with anywhere before running tests. */
   webServer: {
-    command: 'anywhere -d ../app/dist -p 8081 -s',
+    command: 'anywhere -d ../app -p 8081 -s',
     url: 'http://0.0.0.0:8081',
     timeout: 10 * 1000,
   },
