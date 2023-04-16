@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+  pull_request:
 
 jobs:
   run:
@@ -22,6 +23,7 @@ jobs:
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           rustup default "${{ matrix.rust-toolchain }}"
           rustup target add wasm32-unknown-unknown
+          rustup component add rust-src --toolchain ${{ matrix.rust-toolchain }}-x86_64-unknown-linux-gnu
       - name: Use Node.js v18
         uses: actions/setup-node@v3
         with:
@@ -30,8 +32,8 @@ jobs:
         run: npm install
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
-      - name: Install Trunk
-        run: cargo install --force trunk
+      - name: Install wasm-bindgen-cli
+        run: cargo install --force wasm-bindgen-cli --version "${{ matrix.wasm-bindgen-version }}"
       - name: Run reproduction script
         run: |
           sh test.sh --wasm-bindgen-version "${{ matrix.wasm-bindgen-version }}" \
