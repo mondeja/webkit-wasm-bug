@@ -7,9 +7,7 @@ WASM_BINDGEN_VERSION=$DEFAULT_WASM_BINDGEN_VERSION
 TESTS_FAILED=0
 BUILD_FAILED=0
 REMOVE_TARGET_DIR=0
-REMAINING_ATTEMPTS_TO_REPRODUCE=1
-DEFAULT_OPT_LEVEL="z"
-OPT_LEVEL=$DEFAULT_OPT_LEVEL
+REMAINING_ATTEMPTS_TO_REPRODUCE=20
 
 for arg in "$@"; do
   case $arg in
@@ -25,29 +23,26 @@ for arg in "$@"; do
     REMAINING_ATTEMPTS_TO_REPRODUCE="$2"
     shift 2
     ;;
-    --opt-level)
-    OPT_LEVEL="$2"
-    shift 2
-    ;;
   esac
 done
 
 
 set_config() {
     sed -i "s/wasm-bindgen = \".*\"/wasm-bindgen = \"$WASM_BINDGEN_VERSION\"/" Cargo.toml
-    if [ "$OPT_LEVEL" = "z" ] || [ "$OPT_LEVEL" = "s" ]; then
-        OPT_LEVEL="\"$OPT_LEVEL\""
-    fi
-    sed -i "s/opt-level = \".*\"/opt-level = $OPT_LEVEL/" Cargo.toml
 }
 
 revert_config() {
     sed -i "s/wasm-bindgen = \".*\"/wasm-bindgen = \"$DEFAULT_WASM_BINDGEN_VERSION\"/" Cargo.toml
-    sed -i "s/opt-level = \".*\"/opt-level = \"$DEFAULT_OPT_LEVEL\"/" Cargo.toml
 }
 
 build() {
-    wasm-pack build app --target web --release || BUILD_FAILED=1
+    RUSTFLAGS='-C target-feature=+atomics,+bulk-memory,+mutable-globals' \
+        cargo build --target wasm32-unknown-unknown --release \
+        -Z build-std=std,panic_abort || BUILD_FAILED=1
+    wasm-bindgen \
+        target/wasm32-unknown-unknown/release/my_app.wasm \
+        --out-dir app/pkg \
+        --target web
 }
 
 run_tests() {
