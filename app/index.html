@@ -1,6 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <link data-trunk rel="rust" data-wasm-opt="z" />
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
   </head>
+  <body>
+    <script type="module">
+      import init from './pkg/my_app.js';
+      async function run() {
+        await init();
+      }
+      run();
+    </script>
+  </body>
 </html>
